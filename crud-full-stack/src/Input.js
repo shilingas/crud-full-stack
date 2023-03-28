@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { Link } from 'react-router-dom';
 const Input = () => {
     const [object, setObject] = React.useState({
         id: 0,
@@ -41,6 +41,9 @@ const Input = () => {
     }
     return (
         <div className='input-container'>
+            <Link to="/">
+                back to home page
+            </Link>
             <form className='input-form' onSubmit={handleSubmit}>
                 <input type='text' value={object.name} onChange={(e) => setObject({ ...object, name: e.target.value })} />
                 <input type='text' value={object.surname} onChange={(e) => setObject({ ...object, surname: e.target.value })} />
