@@ -1,12 +1,25 @@
-﻿namespace crudd_backend.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace crudd_backend.Models
 {
     public class PhoneModel : IEquatable<PhoneModel>
     {
         private int count;
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [Required]
+        [Column("varchar(50)")]
         public string? CompanyName { get; set; }
+        [Required]
+        [Column("varchar(50)")]
         public string? Model { get; set; }
+        [Required]
+        [Column("integer(50)")]
         public int ReleaseYear { get; set; }
+        [Required]
+        [Column("integer(50)")]
         public int Price { get; set; }
 
         public int Count

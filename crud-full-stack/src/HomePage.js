@@ -7,11 +7,15 @@ const HomePage = () => {
         <div>
             <p>home page...</p>
             <Link to="/input">
-                To input functionality
+                To input functionality (crud on front - adding, updating, removing)
             </Link>
             <br />
             <Link to="/cart">
-                To cart functionality
+                To cart functionality(simple react hooks, fetching data from local API)
+            </Link>
+            <br />
+            <Link to="/manager">
+                To phone manager (FULL-STACK)
             </Link>
         </div>
     );
