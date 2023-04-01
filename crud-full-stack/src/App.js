@@ -6,7 +6,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import HomePage from "./HomePage";
 import Cart from "./Cart";
 import People from "./People";
-import PhoneManager from './PhoneManager';
+import PersonManager from './PersonManager';
 function App() {
     return (
         <div className="App">
@@ -16,7 +16,7 @@ function App() {
                     <Route path="/input" element={<Input />} />
                     <Route path="/cart" element={<Cart />} />
                     <Route path="/people" element={<People />} />
-                    <Route path="/manager" element={<PhoneManager />} />
+                    <Route path="/manager" element={<PersonManager />} />
                 </Routes>
             </BrowserRouter>
         </div>
