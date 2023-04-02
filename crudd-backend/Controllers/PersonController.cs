@@ -20,9 +20,21 @@ namespace crudd_backend.Controllers
         }
         [HttpPost]
         [EnableCors("corsapp")]
-        public async Task<IActionResult> Post([FromBody] Person person)
+        public async Task<IActionResult> Post([FromForm] Person person)
         {
-            _context.Add(person);
+            byte[] photoBytes;
+            using (var memoryStream = new MemoryStream())
+            {
+                await memoryStream.WriteAsync(person.Photo, 0, person.Photo.Length);
+                photoBytes = memoryStream.ToArray();
+            }
+            var tempPerson = new Person
+            {
+                FirstName = person.FirstName,
+                LastName = person.LastName,
+                Photo = photoBytes,
+            };
+            _context.Add(tempPerson);
             await _context.SaveChangesAsync();
             return Ok();
         }
@@ -55,8 +67,8 @@ namespace crudd_backend.Controllers
             var specPerson = await _context.Persons.FindAsync(id);
             if (specPerson != null)
             {
-                specPerson.Name = person.Name;
-                specPerson.Surname = person.Surname;
+                specPerson.FirstName = person.FirstName;
+                specPerson.LastName = person.LastName;
                 await _context.SaveChangesAsync();
                 return Ok("updated");
             }

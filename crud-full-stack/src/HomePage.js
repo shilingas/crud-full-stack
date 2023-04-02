@@ -17,6 +17,10 @@ const HomePage = () => {
             <Link to="/manager">
                 To phone manager (FULL-STACK)
             </Link>
+            <br />
+            <Link to="/file-upload">
+                To file upload
+            </Link>
         </div>
     );
 }

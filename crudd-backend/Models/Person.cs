@@ -1,9 +1,13 @@
-﻿namespace crudd_backend.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+public class Person
 {
-    public class Person
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
-    }
+    [Key]
+    public int Id { get; set; }
+
+    public string? FirstName { get; set; }
+
+    public string? LastName { get; set; }
+
+    public byte[]? Photo { get; set; }
 }
