@@ -9,6 +9,7 @@ const FileUpload = () => {
         const formData = new FormData();
         formData.append("Name", selectedFile.name);
         formData.append("File", selectedFile);
+        console.log(formData);
         axios.post("https://localhost:7206/api/FileUpload", formData, {
             headers: {
                 "Content-Type": "multipart/form-data"

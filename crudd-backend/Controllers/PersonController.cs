@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
+using Microsoft.Extensions.Hosting;
 
 namespace crudd_backend.Controllers
 {
@@ -13,66 +14,42 @@ namespace crudd_backend.Controllers
     public class PersonController : ControllerBase
     {
         private readonly PersonContext _context;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public PersonController(PersonContext context)
+
+        public PersonController(PersonContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            _hostEnvironment = hostEnvironment;
         }
         [HttpPost]
         [EnableCors("corsapp")]
         public async Task<IActionResult> Post([FromForm] Person person)
         {
-            byte[] photoBytes;
-            using (var memoryStream = new MemoryStream())
-            {
-                await memoryStream.WriteAsync(person.Photo, 0, person.Photo.Length);
-                photoBytes = memoryStream.ToArray();
-            }
-            var tempPerson = new Person
-            {
-                FirstName = person.FirstName,
-                LastName = person.LastName,
-                Photo = photoBytes,
-            };
-            _context.Add(tempPerson);
+            person.ImageName = await SaveImage(person.ImageFile);
+            _context.Persons.Add(person);
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(person);
         }
-
         [HttpGet]
         [EnableCors("corsapp")]
-        public async Task<Person[]> GetPersons()
+        public async Task<Person[]> GetAll()
         {
-            var currentData = await _context.Persons.ToArrayAsync();
-            await _context.SaveChangesAsync();
-            return currentData;
+            var data = await _context.Persons.ToArrayAsync();
+            return data;
         }
-        [HttpDelete("{id}")]
-        [EnableCors("corsapp")]
-        public async Task<IActionResult> RemovePerson(int id)
+
+        [NonAction]
+        public async Task<string> SaveImage(IFormFile imageFile)
         {
-            var findPerson = await _context.Persons.FindAsync(id);
-            if (findPerson != null)
+            string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
+            imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", imageName);
+            using (var fileStream = new FileStream(imagePath, FileMode.Create))
             {
-                _context.Persons.Remove(findPerson);
-                await _context.SaveChangesAsync();
-                return Ok("removed");
+                await imageFile.CopyToAsync(fileStream);
             }
-            return Ok("didn't find person");
-        }
-        [HttpPut("{id}")]
-        [EnableCors("corsapp")]
-        public async Task<IActionResult> UpdatePerson([FromBody] Person person, int id)
-        {
-            var specPerson = await _context.Persons.FindAsync(id);
-            if (specPerson != null)
-            {
-                specPerson.FirstName = person.FirstName;
-                specPerson.LastName = person.LastName;
-                await _context.SaveChangesAsync();
-                return Ok("updated");
-            }
-            return Ok("something is wrong");
+            return imageName;
         }
     }
 }
