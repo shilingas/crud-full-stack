@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Cart from './Cart';
 import Input from './Input';
+import TodoList from './TodoList';
 const HomePage = () => {
     return (
         <div>
@@ -20,6 +21,10 @@ const HomePage = () => {
             <br />
             <Link to="/file-upload">
                 To file upload
+            </Link>
+            <br />
+            <Link to="/todo-list">
+                To todo list
             </Link>
         </div>
     );

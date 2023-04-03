@@ -8,6 +8,7 @@ import Cart from "./Cart";
 import People from "./People";
 import PersonManager from './PersonManager';
 import FileUpload from "../src/FileUpload";
+import TodoList from "../src/TodoList";
 function App() {
     return (
         <div className="App">
@@ -19,6 +20,7 @@ function App() {
                     <Route path="/people" element={<People />} />
                     <Route path="/manager" element={<PersonManager />} />
                     <Route path="/file-upload" element={<FileUpload />} />
+                    <Route path="/todo-list" element={<TodoList />} />
                 </Routes>
             </BrowserRouter>
         </div>
